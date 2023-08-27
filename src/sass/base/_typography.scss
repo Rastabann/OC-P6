@@ -1,0 +1,18 @@
+/* Desktop */
+
+:root {
+  --fs-sm: 18px;
+  --fs-m: 24px;
+  --fs-l: 36px;
+  --fs-xl: 48px;
+}
+
+/* Mobile */
+
+@media (max-width: 767.98px) {
+  :root {
+    --fs-m: 13px;
+    --fs-l: 18px;
+    --fs-xl: 24px;
+  }
+}
