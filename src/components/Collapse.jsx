@@ -7,25 +7,27 @@ function Collapse({ title, content }) {
     setIsOpen(!isOpen);
   }
 
+  const renderContent = () => {
+    if (Array.isArray(content)) {
+      return (
+        <ul>
+          {content.map((item, index) => (
+            <li key={index}>{item}</li>
+          ))}
+        </ul>
+      );
+    } else {
+      return <p>{content}</p>;
+    }
+  };
+
   return (
     <div className="collapse">
       <div className="collapse-header" onClick={handleToggle}>
         <h3>{title}</h3>
         <span className={`arrow ${isOpen ? "open" : "closed"}`}></span>
       </div>
-      {isOpen && (
-        <div className="collapse-content">
-          {Array.isArray(content) ? (
-            <ul>
-              {content.map((item, index) => (
-                <li key={index}>{item}</li>
-              ))}
-            </ul>
-          ) : (
-            <p>{content}</p>
-          )}
-        </div>
-      )}
+      {isOpen && <div className="collapse-content">{renderContent()}</div>}
     </div>
   );
 }

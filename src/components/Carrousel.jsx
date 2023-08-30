@@ -6,25 +6,35 @@ function Carrousel({ images }) {
 
   const imageSize = () => {
     const carrouselImage = carrouselImageRef.current;
-
     if (!carrouselImage) {
       return 0;
     }
-
     return carrouselImage.width;
   };
 
-  function previousImage() {
-    setCurrentImageIndex((currentIndex) =>
-      currentIndex === 0 ? images.length - 1 : currentIndex - 1
-    );
-  }
+  const changeImage = (direction) => {
+    setCurrentImageIndex((currentIndex) => {
+      const lastIndex = images.length - 1;
+      if (direction === "previous") {
+        return currentIndex === 0 ? lastIndex : currentIndex - 1;
+      } else if (direction === "next") {
+        return currentIndex === lastIndex ? 0 : currentIndex + 1;
+      }
+      return currentIndex;
+    });
+  };
 
-  function nextImage() {
-    setCurrentImageIndex((currentIndex) =>
-      currentIndex === images.length - 1 ? 0 : currentIndex + 1
-    );
-  }
+  const ImageDisplay = () => {
+    return images.map((image, index) => (
+      <img
+        className="carrousel-image"
+        src={image}
+        key={index}
+        alt="Logement"
+        ref={index === currentImageIndex ? carrouselImageRef : null}
+      />
+    ));
+  };
 
   if (images.length === 1) {
     return (
@@ -40,25 +50,24 @@ function Carrousel({ images }) {
         className="carrousel-container"
         style={{
           transform: `translateX(-${currentImageIndex * imageSize()}px)`,
-        }}>
-        {images.map((image, index) => (
-          <img
-            className="carrousel-image"
-            src={image}
-            key={index}
-            alt="Logement"
-            ref={carrouselImageRef}
-          />
-        ))}
+        }}
+      >
+        {ImageDisplay()}
       </div>
       <div className="carrousel-navigation">
-        <button className="carrousel-button" onClick={previousImage}>
+        <button
+          className="carrousel-button"
+          onClick={() => changeImage("previous")}
+        >
           &lt;
         </button>
         <span className="carrousel-counter">{`${currentImageIndex + 1} / ${
           images.length
         }`}</span>
-        <button className="carrousel-button" onClick={nextImage}>
+        <button
+          className="carrousel-button"
+          onClick={() => changeImage("next")}
+        >
           &gt;
         </button>
       </div>
